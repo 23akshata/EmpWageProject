@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace EmpWageCal
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Welcome Emp wage Calculation");
+            Console.WriteLine("Welcome In Employee Compution ");
+            CheckAttendances EmpCheck = new CheckAttendances();
+            EmpCheck.Attendances();
             Console.ReadLine();
         }
     }
