@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
@@ -15,31 +16,32 @@ namespace EmpWageCal
             const int IS_PART_TIME = 2;
             const int EMP_RATE_PER_HRS = 20;
             const int WORKING_DAYS = 20;
+            const int MAX_HRS_IN_MONTHS = 100;
             int empHrs = 0;
-            int empWages = 0; int totalEmpWage = 0;
-            for (int day = 0; day < WORKING_DAYS; day++)
+            int totalEmpHrs = 0;
+            int totalWorkingDays = 0;
+            while (totalEmpHrs <= MAX_HRS_IN_MONTHS && totalWorkingDays < WORKING_DAYS)
             {
+                totalWorkingDays++;
                 Random random = new Random();
-                int empcheck = random.Next(0, 3);
-                switch (empcheck)
+                int empCheck = random.Next(0, 3);
+                switch (empCheck)
                 {
-                    case IS_FULL_TIME:
-                        Console.WriteLine("Employee Is Present Full Time");
-                        empHrs = 8;
-                        break;
                     case IS_PART_TIME:
-                        Console.WriteLine("Employee Is Present Part Time ");
                         empHrs = 4;
                         break;
+                    case IS_FULL_TIME:
+                        empHrs = 8;
+                        break;
                     default:
-                        Console.WriteLine("Employee is Absent");
                         empHrs = 0;
                         break;
                 }
-                empWages = EMP_RATE_PER_HRS * empHrs;
-                totalEmpWage = totalEmpWage + empWages;
-                Console.WriteLine("empWages = " + empWages);
+
+                totalEmpHrs += empHrs;
+                Console.WriteLine("Days:" + totalWorkingDays + "Emp Hrs :" + empHrs);
             }
+            int totalEmpWage = totalEmpHrs * EMP_RATE_PER_HRS;
             Console.WriteLine("total emp wage : " + totalEmpWage);
         }
     }
