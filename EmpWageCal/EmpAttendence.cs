@@ -1,65 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System;
 
-namespace EmployeeWageCalculation
+namespace EmpWageCal
 {
-    public class CheckAttendances
+    public class CheckAttendence
     {
-        public const int IS_FULL_TIME = 1;
-        public const int IS_PART_TIME = 2;
-        private string company;
-        private int Emp_Rate_PrHrs;
-        private int Num_of_Working_Days;
-        private int Max_Rate_In_Month;
-        private int totalEmpWage;
-        public CheckAttendances(string company, int Emp_Rate_PrHrs, int Num_of_Working_Days, int Max_Rate_In_Month)
+        public string company;
+        public int Wage_Per_Hour;
+        public int Max_Working_Days;
+        public int Max_Working_Hours;
+        public int totalWage;
+
+        public CheckAttendence(string company, int Wage_Per_Hour, int Max_Working_Days, int Max_Working_Hours)
         {
             this.company = company;
-            this.Emp_Rate_PrHrs = Emp_Rate_PrHrs;
-            this.Num_of_Working_Days = Num_of_Working_Days;
-            this.Max_Rate_In_Month = Max_Rate_In_Month;
+            this.Wage_Per_Hour = Wage_Per_Hour;
+            this.Max_Working_Days = Max_Working_Days;
+            this.Max_Working_Hours = Max_Working_Hours;
+            this.totalWage = 0;
+        }
+    }
+    public class EmpWageWorking
+    {
+        private List<CheckAttendence> companyEmpWageList;
 
+        public EmpWageWorking()
+        {
+            this.companyEmpWageList = new List<CheckAttendence>();
         }
 
-        public void Attendances()
+        public void AddCompanyEmpWage(string company, int Wage_Per_Hour, int Max_Working_Days, int Max_Working_Hours)
         {
-            int empHrs = 0;
-            int totalEmpHrs = 0;
-            int totalWorkingDays = 0;
-            while (totalEmpHrs <= Max_Rate_In_Month && totalWorkingDays < Max_Rate_In_Month)
+            CheckAttendence companyEmpWage = new CheckAttendence(company, Wage_Per_Hour, Max_Working_Days, Max_Working_Hours);
+            this.companyEmpWageList.Add(companyEmpWage);
+        }
+
+        public void ComputeEmployeeWage()
+        {
+            foreach (CheckAttendence companyEmpWage in companyEmpWageList)
             {
-                totalWorkingDays++;
-                Random random = new Random();
-                int empCheck = random.Next(0, 3);
-                switch (empCheck)
+                int empHours = 0, empWage = 0, totalEmpHours = 0, totalWorkingDays = 0;
+
+                while (totalEmpHours < companyEmpWage.Max_Working_Hours && totalWorkingDays < companyEmpWage.Max_Working_Days)
                 {
-                    case IS_PART_TIME:
-                        empHrs = 4;
-                        break;
-                    case IS_FULL_TIME:
-                        empHrs = 8;
-                        break;
-                    default:
-                        empHrs = 0;
-                        break;
+                    totalWorkingDays++;
+
+                    Random random = new Random();
+                    int empCheck = random.Next(0, 3);
+
+                    switch (empCheck)
+                    {
+                        case 1:
+                            empHours = 4;
+                            break;
+                        case 2:
+                            empHours = 8;
+                            break;
+                        default:
+                            empHours = 0;
+                            break;
+                    }
+
+                    totalEmpHours += empHours;
+                    empWage = empHours * companyEmpWage.Wage_Per_Hour;
                 }
 
-                totalEmpHrs += empHrs;
-                Console.WriteLine("Days:" + totalWorkingDays + "Emp Hrs :" + empHrs);
+                companyEmpWage.totalWage = empWage * totalWorkingDays;
+                Console.WriteLine($"Total employee wage for company {companyEmpWage.company} is {companyEmpWage.totalWage}");
             }
-            int totalEmpWage = totalEmpHrs * this.Emp_Rate_PrHrs;
-            Console.WriteLine("total emp wage : " + company + " is" + totalEmpWage);
-
         }
-        public string tostring()
-        {
-            return "Total Wage For Company " + this.company + "is" + totalEmpWage;
-        }
-
     }
-
 }

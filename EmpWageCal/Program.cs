@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EmpWageCal;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,12 +11,11 @@ namespace EmployeeWageCalculation
     {
         static void Main(string[] args)
         {
-            CheckAttendances Amazon = new CheckAttendances("Amazon", 20, 2, 10);
-            CheckAttendances Google = new CheckAttendances("Google", 10, 4, 20);
-            Amazon.Attendances();
-            Console.WriteLine(Amazon.ToString());
-            Google.Attendances();
-            Console.WriteLine(Google.ToString());
+            Console.WriteLine("Employee Wage of multiple companies");
+            EmpWageWorking empWageWorking = new EmpWageWorking();
+            empWageWorking.AddCompanyEmpWage("Amazon", 20, 20, 100);
+            empWageWorking.AddCompanyEmpWage("Google", 25, 25, 120);
+            empWageWorking.ComputeEmployeeWage();
             Console.ReadLine();
         }
     }
